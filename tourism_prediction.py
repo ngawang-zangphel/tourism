@@ -141,9 +141,13 @@ def generate_tourism_data():
         mae = mean_absolute_error(y, y_pred_train)
         mse = mean_squared_error(y, y_pred_train)
         r2 = r2_score(y, y_pred_train)
-        evaluation_results[metric] = {"MAE": mae, "MSE": mse, "R² Score": r2}
+        evaluation_results[metric] = {"MAE (Mean Absolute Error)": mae, "MSE (Mean Squared Error)": mse, "R² Score (Coefficient of Determination)": r2}
     evaluation_data = pd.DataFrame.from_dict(evaluation_results, orient='index')
     st.dataframe(evaluation_data)
+
+    st.text("MAE: Measures the average absolute difference between predicted and actual values. Lower is better.")
+    st.text("MSE: Similar to MAE but squares the differences, making larger errors more significant. Lower is better.")
+    st.text("R² Score: Measures how well the model explains variance in the data. Ranges from -∞ to 1, where 1 is a perfect fit, 0 means no predictive power, and negative values indicate a poor fit.")
 
     # Export predictions
     st.info("Exporting and Download Data is not yet implemented")
