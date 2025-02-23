@@ -17,6 +17,12 @@ data_options = {
     "Insert Url": "insert_url",
 }
 
+date_options = {
+    "Use Default Year (predictions will be made for 5 years from the last available year in the uploaded data)": "default_date",
+    "Specific Year": "date_specific_year",
+    "Range of Years": "date_range_years",
+}
+
 data_option = st.radio("Choose Data Source:", list(data_options.keys()), key="data_source_option")
 selected_key = data_options[data_option]
 default_data_url = "https://github.com/ngawang-zangphel/tourism/blob/main/assets/data/bhutan-tourism-data.xlsx"
@@ -35,6 +41,20 @@ elif selected_key == "insert_url":
 if selected_key == "upload_data" or selected_key == "insert_url":
     st.text(f"Your Table Format should be like below")
     st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png?raw=true", caption="Tourism Data Overview")
+
+st.info("Choosing your own prediction period is not yet implemented")
+date_option = st.radio("Choose how you want to define the prediction period", list(date_options.keys()))
+selected_date_year = date_options[date_option]
+
+#Date Options
+if selected_date_year == "default_date":
+    prediction_date = 5
+elif selected_date_year == "date_specific_year":
+    prediction_date = st.date_input("Choose a specific").year
+    st.text(f"Date prediction will be made till {prediction_date}")
+elif selected_date_year == "date_range_years":
+    prediction_date = st.number_input("Range of Years: ", min_value=1, step=1)
+    st.text(f"predictions will be made for {prediction_date} years from the last available year in the uploaded data")
 
 # Check if the url is valid or not
 def is_valid_url(url):
