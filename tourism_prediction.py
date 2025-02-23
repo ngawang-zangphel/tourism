@@ -92,6 +92,7 @@ def generate_tourism_data():
 
     # Predictions
     st.subheader("Predictions for Future Years")
+    st.text("The prediction is made using linear regression.")
     predictions_dict = {}
 
     for metric in df.index:
