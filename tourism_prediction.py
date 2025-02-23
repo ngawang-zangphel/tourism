@@ -36,12 +36,12 @@ if selected_key == "upload_data" or selected_key == "insert_url":
     st.text(f"Your Table Format should be like below")
     st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png?raw=true", caption="Tourism Data Overview")
 
-#Check if the url is valid or not
+# Check if the url is valid or not
 def is_valid_url(url):
     result = urlparse(url)
     return all([result.scheme, result.netloc])
 
-#Predict Tourism Data
+# Predict Tourism Data
 def generate_tourism_data():
     tourism_data = pd.read_excel(uploaded_file, sheet_name=0)
 
@@ -67,6 +67,12 @@ def generate_tourism_data():
     ax.set_ylabel("Inbound Arrivals (Thousands)")
     ax.legend(title="Region", loc='upper left')
     ax.grid(True)
+
+    # Ensure xticks are integers
+    ax.set_xticks(np.arange(1995, 2023, 1))  # Set step size to 1 year
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{int(x)}"))
+    plt.xticks(rotation=90) 
+
     st.pyplot(fig)
 
     # Bar Graph
@@ -77,6 +83,11 @@ def generate_tourism_data():
         ax.set_xlabel("Year")
         ax.set_ylabel("Inbound Arrivals (Thousands)")
         ax.set_title(f"Inbound Arrivals for {region} (1995-2022)")
+
+        # Ensure xticks are integers
+        ax.set_xticks(np.arange(1995, 2023, 1))  # Set step size to 1 year
+        ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{int(x)}"))
+        plt.xticks(rotation=90)  
         st.pyplot(fig)
 
     # Predictions
@@ -95,7 +106,7 @@ def generate_tourism_data():
         y = df_metric["Value"].values
         model = LinearRegression()
         model.fit(X, y)
-        future_years = np.array(range(2022, datetime.now().year + 5)).reshape(-1, 1)
+        future_years = np.arange(2022, datetime.now().year + 5, dtype=int).reshape(-1, 1)
         future_predictions = model.predict(future_years)
         predictions_dict[metric] = {"Year": future_years.flatten(), "Predicted Value": future_predictions}
 
@@ -103,9 +114,15 @@ def generate_tourism_data():
     fig, ax = plt.subplots(figsize=(10, 5))
     for metric, data in predictions_dict.items():
         ax.plot(data["Year"], data["Predicted Value"], marker="o", linestyle="-", label=metric)
+    
     ax.set_xlabel("Year")
     ax.set_ylabel("Predicted Value")
     ax.set_title("Predicted Metrics (2022-2032)")
+
+    # Ensure xticks are integers
+    ax.set_xticks(np.arange(2022, datetime.now().year + 5, 1))  # Set step size to 1 year
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{int(x)}"))
+
     ax.legend(loc="upper left")
     ax.grid(True)
     st.pyplot(fig)
@@ -145,7 +162,6 @@ def generate_tourism_data():
         # Save the predictions to a BytesIO object (no need to save to a file on disk)
         predicted_df.to_excel(predicted_df, index=True)
         st.success("Predictions are ready for download!")
-
 
 if st.button("Process Uploaded File"):
     if selected_key == "insert_url":
