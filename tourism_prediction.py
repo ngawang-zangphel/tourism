@@ -36,11 +36,12 @@ if selected_key == "upload_data" or selected_key == "insert_url":
     st.text(f"Your Table Format should be like below")
     st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png?raw=true", caption="Tourism Data Overview")
 
+#Check if the url is valid or not
 def is_valid_url(url):
     result = urlparse(url)
     return all([result.scheme, result.netloc])
 
-
+#Predict Tourism Data
 def generate_tourism_data():
     tourism_data = pd.read_excel(uploaded_file, sheet_name=0)
 
