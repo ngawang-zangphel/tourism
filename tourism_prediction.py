@@ -33,7 +33,7 @@ elif selected_key == "insert_url":
 
 if selected_key == "upload_data" or selected_key == "insert_url":
     st.text(f"Your Table Format should be like below")
-    st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png", caption="Tourism Data Overview", use_container_width=True)
+    st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png?raw=true", caption="Tourism Data Overview")
 
 def is_valid_url(url):
     result = urlparse(url)
