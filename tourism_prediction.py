@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import io
 
 # Title
-st.title("Tourism Data Analysis and Prediction")
+st.title("Tourism Data Analysis and Prediction Till Year 2032")
 
 data_options = {
     "Use Default Data": "default_data",
