@@ -17,25 +17,23 @@ data_options = {
 }
 
 data_option = st.radio("Choose Data Source:", list(data_options.keys()), key="data_source_option")
-print(data_option)
-
 selected_key = data_options[data_option]
-print(selected_key)
+default_data_url = "https://github.com/ngawang-zangphel/tourism/blob/main/assets/data/bhutan-tourism-data.xlsx"
 
 # File Upload
 if selected_key == "upload_data":
     # Default Data
     uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
 elif selected_key == "default_data":
-    uploaded_file = "https://github.com/ngawang-zangphel/tourism/blob/main/bhutan-tourism-data.xlsx?raw=true"
+    uploaded_file = f"{default_data_url}?raw=true"
     st.text(f"The Default Data will be fetched from")
-    st.markdown("https://github.com/ngawang-zangphel/tourism/blob/main/bhutan-tourism-data.xlsx")
+    st.markdown(default_data_url)
 elif selected_key == "insert_url":
     uploaded_file = st.text_input("Enter URL to fetch data from:")
 
 if selected_key == "upload_data" or selected_key == "insert_url":
     st.text(f"Your Table Format should be like below")
-    st.image("https://picsum.photos/id/237/200/100", caption="Tourism Data Overview", use_container_width=True)
+    st.image("https://github.com/ngawang-zangphel/tourism/blob/main/assets/images/image.png", caption="Tourism Data Overview", use_container_width=True)
 
 def is_valid_url(url):
     result = urlparse(url)
