@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import io
 
 # Title
-st.title("Tourism Data Analysis and Prediction Till Year 2032")
+st.title("Tourism Data Analysis and Prediction Till 5 years from now")
 
 data_options = {
     "Use Default Data": "default_data",
@@ -127,7 +127,7 @@ def generate_tourism_data():
         y = df_metric["Value"].values
         model = LinearRegression()
         model.fit(X, y)
-        future_years = np.arange(2022, datetime.now().year + 5, dtype=int).reshape(-1, 1)
+        future_years = np.arange(2022, datetime.now().year + 6, dtype=int).reshape(-1, 1)
         future_predictions = model.predict(future_years)
         predictions_dict[metric] = {"Year": future_years.flatten(), "Predicted Value": future_predictions}
 
@@ -138,10 +138,10 @@ def generate_tourism_data():
     
     ax.set_xlabel("Year")
     ax.set_ylabel("Predicted Value")
-    ax.set_title("Predicted Metrics (2022-2032)")
+    ax.set_title("Predicted Metrics (2022-2030)")
 
     # Ensure xticks are integers
-    ax.set_xticks(np.arange(2022, datetime.now().year + 5, 1))  # Set step size to 1 year
+    ax.set_xticks(np.arange(2022, datetime.now().year + 6, 1))  # Set step size to 1 year
     ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"{int(x)}"))
 
     ax.legend(loc="upper left")
