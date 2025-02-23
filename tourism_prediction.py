@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from datetime import datetime
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from urllib.parse import urlparse
+import io
 
 # Title
 st.title("Tourism Data Analysis and Prediction")
@@ -127,8 +128,10 @@ def generate_tourism_data():
     st.dataframe(evaluation_data)
 
     # Export predictions
+    st.info("Exporting and Download Data is not yet implemented")
     st.subheader("Export Predictions")
-    if st.button("Download Predictions"):
+    if st.button("Generate Predictions and Download", disabled=True):
+    # Prepare the DataFrame for export
         predicted_df = pd.DataFrame()
         for metric, data in predictions_dict.items():
             meta_info = df.loc[[metric], ["category", "unit"]].drop_duplicates()
@@ -138,9 +141,9 @@ def generate_tourism_data():
             pred_data.insert(2, "unit", meta_info.iloc[0, 1] if not meta_info.empty else "Unknown")
             predicted_df = pd.concat([predicted_df, pred_data], ignore_index=True)
 
-        output_filename = "tourism_predictions.xlsx"
-        predicted_df.to_excel(output_filename, index=False)
-        st.success(f"Predictions exported as {output_filename}")
+        # Save the predictions to a BytesIO object (no need to save to a file on disk)
+        predicted_df.to_excel(predicted_df, index=True)
+        st.success("Predictions are ready for download!")
 
 
 if st.button("Process Uploaded File"):
