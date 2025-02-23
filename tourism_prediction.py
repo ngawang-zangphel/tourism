@@ -5,14 +5,44 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from urllib.parse import urlparse
 
 # Title
 st.title("Tourism Data Analysis and Prediction")
 
-# File Upload
-uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
+data_options = {
+    "Use Default Data": "default_data",
+    "Upload Your Own": "upload_data",
+    "Insert Url": "insert_url",
+}
 
-if uploaded_file:
+data_option = st.radio("Choose Data Source:", list(data_options.keys()), key="data_source_option")
+print(data_option)
+
+selected_key = data_options[data_option]
+print(selected_key)
+
+# File Upload
+if selected_key == "upload_data":
+    # Default Data
+    uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
+elif selected_key == "default_data":
+    uploaded_file = "https://github.com/ngawang-zangphel/tourism/blob/main/bhutan-tourism-data.xlsx?raw=true"
+    st.text(f"The Default Data will be fetched from")
+    st.markdown("https://github.com/ngawang-zangphel/tourism/blob/main/bhutan-tourism-data.xlsx")
+elif selected_key == "insert_url":
+    uploaded_file = st.text_input("Enter URL to fetch data from:")
+
+if selected_key == "upload_data" or selected_key == "insert_url":
+    st.text(f"Your Table Format should be like below")
+    st.image("https://picsum.photos/id/237/200/100", caption="Tourism Data Overview", use_container_width=True)
+
+def is_valid_url(url):
+    result = urlparse(url)
+    return all([result.scheme, result.netloc])
+
+
+def generate_tourism_data():
     tourism_data = pd.read_excel(uploaded_file, sheet_name=0)
 
     # Data Cleaning
@@ -113,3 +143,16 @@ if uploaded_file:
         output_filename = "tourism_predictions.xlsx"
         predicted_df.to_excel(output_filename, index=False)
         st.success(f"Predictions exported as {output_filename}")
+
+
+if st.button("Process Uploaded File"):
+    if selected_key == "insert_url":
+        if is_valid_url(uploaded_file):
+            generate_tourism_data()
+        else:
+            st.error("Invalid URL. Please enter a valid URL.")
+    else:     
+        if uploaded_file:
+            generate_tourism_data()
+        else:
+            st.error("No file uploaded.")
